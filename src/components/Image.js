@@ -17,7 +17,6 @@ const Image = () => {
     const getImage = async () => {
       try {
         const { data } = await axios.get('https://api.imgflip.com/get_memes')
-        console.log(data.data.memes)
         setAllImages(data.data.memes)
       } catch (error) {
         console.log(error)
