@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+
 const Image = () => {
 
   const [image, setImage] = useState({
     topText: '',
     bottomText: '',
-    randomImage: 'http://i.imgflip.com/1bij.jpg',
+    randomImage: 'https://i.imgflip.com/1c1uej.jpg',
   })
 
   const [allImages, setAllImages] = useState([])
@@ -26,14 +27,22 @@ const Image = () => {
   }, [])
 
   const getRandomImage = () => {
-    const randomNumber = Math.floor(Math.random() * allImages.length)
-    const url = allImages[randomNumber].url
-    setImage((prevImage) => ({
+    if (allImages.length > 0) {
+      const randomNumber = Math.floor(Math.random() * allImages.length)
+      const url = allImages[randomNumber].url
+      setImage((prevImage) => ({
+        ...prevImage,
+        randomImage: url,
+      }))
+    }
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setImage(prevImage => ({
       ...prevImage,
-      randomImage: url,
+      [name]: value,
     }))
-    console.log(url)
-    console.log('Updated image state:', image)
   }
 
   return (
@@ -43,12 +52,17 @@ const Image = () => {
           type='text'
           className='form--input'
           placeholder='Top text'
-          
+          name='topText'
+          onChange={handleChange}
+          value={image.topText}
         />
         <input
           type='text'
           className='form--input'
           placeholder='Bottom text'
+          name='bottomText'
+          onChange={handleChange}
+          value={image.bottomText}
         />
         <button 
           className='form--button'
@@ -58,7 +72,11 @@ const Image = () => {
         </button>
       </div>
       <div className='image'>
-        <img src={image.randomImage} alt="" className='image--box' />
+        <img src={image.randomImage} 
+          className='image--box' 
+        />
+        <h2 className="image--text top">{image.topText}</h2>
+        <h2 className="image--text bottom">{image.bottomText}</h2>
       </div>
     </main>
   )
